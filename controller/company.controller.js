@@ -1,4 +1,3 @@
-const { json } = require('express');
 const db = require('../db');
 
 class CompanyController {
@@ -16,9 +15,24 @@ class CompanyController {
     res.json(companies.rows);
   }
 
-  async getOneCompany(req, res) {}
-  async updateCompany(req, res) {}
-  async deleteCompany(req, res) {}
+  async getOneCompany(req, res) {
+    const id = req.params.id;
+    const company = await db.query('SELECT * FROM company where id = $1', [id]);
+    res.json(company.rows[0]);
+  }
+  async updateCompany(req, res) {
+    const { id, name, description } = req.body;
+    const company = await db.query(
+      'UPDATE company set name = $1, description = $2 where id = $3 RETURNING *',
+      [name, description, id]
+    );
+    res.json(company.rows[0]);
+  }
+  async deleteCompany(req, res) {
+    const id = req.params.id;
+    const company = await db.query('DELETE FROM company where id = $1', [id]);
+    res.json(company.rows[0]);
+  }
 }
 
 module.exports = new CompanyController();
