@@ -4,7 +4,6 @@ class ApplicantController {
   async createApplicant(req, res) {
     try {
       const { applicant_name, resume, email } = req.body;
-      console.log(applicant_name, resume, email);
       const newApplicant = await db.query(
         'INSERT INTO applicant (applicant_name, resume, email) values ($1, $2, $3) RETURNING *',
         [applicant_name, resume, email]
@@ -57,7 +56,6 @@ class ApplicantController {
   async deleteApplicant(req, res) {
     try {
       const id = req.params.id;
-      console.log(id);
       const applicant = await db.query(
         'DELETE FROM applicant where id = $1 RETURNING *',
         [id]
