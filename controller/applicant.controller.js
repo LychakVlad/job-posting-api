@@ -10,10 +10,12 @@ class ApplicantController {
     );
     res.send(newApplicant.rows[0]);
   }
+
   async getAllApplicant(req, res) {
     const applicants = await db.query('SELECT * FROM applicant');
     res.json(applicants.rows);
   }
+
   async getApplicant(req, res) {
     const id = req.params.id;
     const applicant = await db.query('SELECT * FROM applicant where id = $1', [
@@ -21,6 +23,7 @@ class ApplicantController {
     ]);
     res.json(applicant.rows[0]);
   }
+
   async updateApplicant(req, res) {
     const { applicant_name, resume, email, id } = req.body;
     const applicant = await db.query(
@@ -29,6 +32,7 @@ class ApplicantController {
     );
     res.json(applicant.rows[0]);
   }
+
   async deleteApplicant(req, res) {
     const id = req.params.id;
     console.log(id);

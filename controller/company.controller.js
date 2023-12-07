@@ -2,36 +2,77 @@ const db = require('../db');
 
 class CompanyController {
   async createCompany(req, res) {
-    const { name, description } = req.body;
-    const newComapny = await db.query(
-      'INSERT INTO company (name, description) values ($1, $2) RETURNING * ',
-      [name, description]
-    );
-    res.json(newComapny.rows[0]);
+    try {
+      const { name, description } = req.body;
+      const newCompany = await db.query(
+        'INSERT INTO company (name, description) VALUES ($1, $2) RETURNING *',
+        [name, description]
+      );
+      res.json(newCompany.rows[0]);
+    } catch (error) {
+      console.error('Error creating company:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 
   async getCompanies(req, res) {
-    const companies = await db.query('SELECT * FROM company');
-    res.json(companies.rows);
+    try {
+      const companies = await db.query('SELECT * FROM company');
+      res.json(companies.rows);
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 
   async getOneCompany(req, res) {
-    const id = req.params.id;
-    const company = await db.query('SELECT * FROM company where id = $1', [id]);
-    res.json(company.rows[0]);
+    try {
+      const id = req.params.id;
+      const company = await db.query('SELECT * FROM company WHERE id = $1', [
+        id,
+      ]);
+      if (company.rows.length === 0) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+      res.json(company.rows[0]);
+    } catch (error) {
+      console.error('Error fetching company:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
+
   async updateCompany(req, res) {
-    const { id, name, description } = req.body;
-    const company = await db.query(
-      'UPDATE company set name = $1, description = $2 where id = $3 RETURNING *',
-      [name, description, id]
-    );
-    res.json(company.rows[0]);
+    try {
+      const { id, name, description } = req.body;
+      const company = await db.query(
+        'UPDATE company SET name = $1, description = $2 WHERE id = $3 RETURNING *',
+        [name, description, id]
+      );
+      if (company.rows.length === 0) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+      res.json(company.rows[0]);
+    } catch (error) {
+      console.error('Error updating company:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
+
   async deleteCompany(req, res) {
-    const id = req.params.id;
-    const company = await db.query('DELETE FROM company where id = $1', [id]);
-    res.json(company.rows[0]);
+    try {
+      const id = req.params.id;
+      const company = await db.query(
+        'DELETE FROM company WHERE id = $1 RETURNING *',
+        [id]
+      );
+      if (company.rows.length === 0) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+      res.json(company.rows[0]);
+    } catch (error) {
+      console.error('Error deleting company:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 }
 

@@ -22,6 +22,7 @@ class JobController {
     const jobs = await db.query('SELECT * FROM job');
     res.json(jobs.rows);
   }
+
   async updateJob(req, res) {
     const { title, content, id } = req.body;
     const job = await db.query(
