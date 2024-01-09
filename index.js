@@ -3,6 +3,7 @@ const companyRouter = require('./routes/company.routes');
 const jobRouter = require('./routes/job.routes');
 const applicantRouter = require('./routes/applicant.routes');
 const jobApplicationRouter = require('./routes/job-application.routes');
+const authRouter = require('./routes/auth.routes');
 
 const PORT = process.env.PORT || 3002;
 
@@ -13,5 +14,6 @@ app.use('/', companyRouter);
 app.use('/', jobRouter);
 app.use('/', applicantRouter);
 app.use('/', jobApplicationRouter);
+app.use('/', authRouter);
 
 app.listen(PORT, () => console.log(`server started on port ${PORT}`));
