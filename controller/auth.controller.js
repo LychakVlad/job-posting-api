@@ -1,9 +1,16 @@
+const { validationResult } = require('express-validator');
 const db = require('../db');
 const bcrypt = require('bcrypt');
 
 class AuthController {
   async registration(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res
+          .status(400)
+          .json({ message: 'Error during the registration', errors });
+      }
       const { username, role, password, email } = req.body;
       const created_on = new Date();
 
