@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 3002;
 const app = express();
 
 app.use(express.json());
-app.use('/', companyRouter);
-app.use('/', jobRouter);
-app.use('/', applicantRouter);
-app.use('/', jobApplicationRouter);
+app.use('/comapny', companyRouter);
+app.use('/job', jobRouter);
+app.use('/applicant', applicantRouter);
+app.use('/job-application', jobApplicationRouter);
 app.use('/', authRouter);
 
 app.listen(PORT, () => console.log(`server started on port ${PORT}`));
