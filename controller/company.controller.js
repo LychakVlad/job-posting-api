@@ -1,9 +1,18 @@
 const db = require('../db');
+const { validationResult } = require('express-validator');
 
 class CompanyController {
   async createCompany(req, res) {
     try {
       const { name, description } = req.body;
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res
+          .status(400)
+          .json({ message: 'Error during creating the company', errors });
+      }
+
       const newCompany = await db.query(
         'INSERT INTO company (name, description) VALUES ($1, $2) RETURNING *',
         [name, description]

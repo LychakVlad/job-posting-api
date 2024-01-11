@@ -1,9 +1,18 @@
 const db = require('../db');
+const { validationResult } = require('express-validator');
 
 class JobController {
   async createJob(req, res) {
     try {
       const { title, content, companyId } = req.body;
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res
+          .status(400)
+          .json({ message: 'Error during creating the job', errors });
+      }
+
       const newJob = await db.query(
         'INSERT INTO job (title, content, company_id) values ($1, $2, $3) RETURNING *',
         [title, content, companyId]

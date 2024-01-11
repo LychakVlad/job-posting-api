@@ -3,33 +3,38 @@ const router = new Router();
 const applicantController = require('../controller/applicant.controller');
 const roleMiddleware = require('../middleware/roleMiddleware');
 const authMiddleware = require('../middleware/authMiddleware');
+const { check } = require('express-validator');
 
 router.post(
-  '/applicant',
+  '/',
   roleMiddleware(['applicant', 'admin']),
   authMiddleware,
+  [
+    check('email', "Email can't be empty").notEmpty(),
+    check('applicant_name', "Name can't be empty").notEmpty(),
+  ],
   applicantController.createApplicant
 );
 router.get(
-  '/applicant',
+  '/',
   roleMiddleware(['applicant', 'admin', 'company']),
   authMiddleware,
   applicantController.getAllApplicant
 );
 router.get(
-  '/applicant/:id',
+  '/:id',
   roleMiddleware(['applicant', 'admin', 'company']),
   authMiddleware,
   applicantController.getApplicant
 );
 router.put(
-  '/applicant',
+  '/',
   roleMiddleware(['applicant', 'admin']),
   authMiddleware,
   applicantController.updateApplicant
 );
 router.delete(
-  '/applicant/:id',
+  '/:id',
   roleMiddleware(['applicant', 'admin']),
   authMiddleware,
   applicantController.deleteApplicant

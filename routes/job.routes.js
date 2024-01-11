@@ -3,33 +3,35 @@ const router = new Router();
 const jobController = require('../controller/job.controller');
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
+const { check } = require('express-validator');
 
 router.post(
-  '/job',
+  '/',
   roleMiddleware(['admin', 'company']),
   authMiddleware,
+  [check('title', "Title field name can't be empty").notEmpty()],
   jobController.createJob
 );
 router.get(
-  '/job/:id',
+  '/:id',
   roleMiddleware(['admin', 'company', 'applicant']),
   authMiddleware,
   jobController.getJobsByCompany
 );
 router.get(
-  '/job',
+  '/',
   roleMiddleware(['admin', 'company', 'applicant']),
   authMiddleware,
   jobController.getAllJobs
 );
 router.put(
-  '/job',
+  '/',
   roleMiddleware(['admin', 'company']),
   authMiddleware,
   jobController.updateJob
 );
 router.delete(
-  '/job/:id',
+  '//:id',
   roleMiddleware(['admin', 'company']),
   authMiddleware,
   jobController.deleteJob
