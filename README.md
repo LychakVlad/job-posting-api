@@ -118,6 +118,4 @@ Ensures that users have the required role to access specific routes.
 
 Vladislav Lychak - [@LinkedIn](https://www.linkedin.com/in/vladislav-lychak/) - lycakvladislav@gmail.com
 
-Project Link: [https://my-food-blog-two.vercel.app/](https://my-food-blog-two.vercel.app/)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
